@@ -25,12 +25,14 @@ import { lightTester } from './utils/lightTester'
 import { Resizer } from './system/Resizer'
 import { planetsConfig } from "./components/bodies/planetsConfig";
 
+import { pachinko } from './components/bodies/pachinko'
+
 class World {
   constructor() {
     console.log('fxhash:   ', fxhash);
 
-    this.planetsConfig = planetsConfig();
-    this.gravity = this.planetsConfig.gravity;
+    // this.planetsConfig = planetsConfig();
+    this.gravity = 9.81;
     this.dt = 1/120;
 
     this.xrEnabled = false;
@@ -100,15 +102,19 @@ class World {
 
     // this.materialTester      = materialTester(this.scene, envMap);
     // this.lightTester         = lightTester(this.scene, envMap);
+
+
+    this.pachinko = pachinko(this.scene, this.loop, this.physicsWorld, envMap, this.colorComposition)
     
     this.walls               = walls    (this.scene, this.floorSize, this.bgHSL, this.bgColor);
-    this.pendulum            = pendulum (this.scene, this.loop, this.physicsWorld, envMap, this.colorComposition, this.gravity);
-    this.spheresFragment     = spheres  (this.scene, this.loop, this.physicsWorld, envMap, this.bgHSL, {min: 0.02,  sizeRange: $fx.rand()/20, n: 8, y: 0.2, yRange: 3});
-    this.cubesFragment       = cubes    (this.scene, this.loop, this.physicsWorld, envMap, this.bgHSL, {min: 0.05,  sizeRange: 0.10, n: 10 , y: 0.2,  yRange: 2});
-    this.miniCubesFragment   = cubes    (this.scene, this.loop, this.physicsWorld, envMap, this.bgHSL, {min: 0.006, sizeRange: 0.04, n: 48, y: 0.06, yRange: 2});
+    // this.pendulum            = pendulum (this.scene, this.loop, this.physicsWorld, envMap, this.colorComposition, this.gravity);
+    // this.spheresFragment     = spheres  (this.scene, this.loop, this.physicsWorld, envMap, this.bgHSL, {min: 0.02,  sizeRange: $fx.rand()/20, n: 8, y: 0.2, yRange: 3});
+    // this.cubesFragment       = cubes    (this.scene, this.loop, this.physicsWorld, envMap, this.bgHSL, {min: 0.05,  sizeRange: 0.10, n: 10 , y: 0.2,  yRange: 2});
+    // this.miniCubesFragment   = cubes    (this.scene, this.loop, this.physicsWorld, envMap, this.bgHSL, {min: 0.006, sizeRange: 0.04, n: 48, y: 0.06, yRange: 2});
     // this.pedestals           = pedestals(this.scene, this.loop, this.physicsWorld, envMap, this.colorComposition, {min: 0.006, sizeRange: 0.04, n: 48, y: 0.06, yRange: 2});
     
-    this.orbitControls.target = this.pendulum.handleB.mesh.position;
+    // this.orbitControls.target = this.pendulum.handleB.mesh.position;
+    this.orbitControls.target = this.pachinko.position;
   }
 
   start() {

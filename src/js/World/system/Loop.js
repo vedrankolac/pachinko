@@ -33,7 +33,9 @@ class Loop {
         this.stats.update(); 
       }
 
-      this.orbitControls.update();
+      if (this.orbitControls) {
+        this.orbitControls.update();
+      }
 
       if (this.doPostprocessing) {
         this.composer.render();

@@ -4,20 +4,18 @@ import { MathUtils } from 'three';
 const createCamera = () => {
   const camera = new PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 300 );
 
-  // camera.position.x = 9;
-  // camera.position.y = 9;
-  // camera.position.z = 9;
-
-  const radius  = $fx.rand()*15+9;
-  const polar   = MathUtils.degToRad($fx.rand()*45+30);
-  const equator = MathUtils.degToRad($fx.rand()*60+15);
-
+  const radius  = 4;
+  const polar   = MathUtils.degToRad(60);
+  const equator = MathUtils.degToRad(10);
   const cameraVector = new Vector3();
   cameraVector.setFromSphericalCoords(radius, polar, equator);
-
   camera.position.x = cameraVector.x;
   camera.position.y = cameraVector.y;
   camera.position.z = cameraVector.z;
+
+  // camera.position.x = 0;
+  // camera.position.y = 0;
+  // camera.position.z = 0;
 
   return camera;
 }

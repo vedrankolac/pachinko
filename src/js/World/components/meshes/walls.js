@@ -1,9 +1,11 @@
 import { PlaneGeometry, SphereGeometry, Mesh, MeshStandardMaterial, MathUtils, DoubleSide } from 'three';
 import { RndDotsFloor } from '../canvasMaps/RndDotsFloor';
 import { canvasTextureMaterial } from '../materials/canvasTextureMaterial';
+import { hslToHex } from '../../utils/colorUtils';
 
 const walls = (scene, size, bgHSL, color) => {
-  const maps = new RndDotsFloor(bgHSL, color, 256);
+  const c = hslToHex(0.6, 1, 1);
+  const maps = new RndDotsFloor(bgHSL, c, 256);
 
   const plastic = {
     roughness: 1,
