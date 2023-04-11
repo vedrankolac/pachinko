@@ -10,6 +10,7 @@ const cube = (
     translation,
     rotation,
     physicsWorld,
+    rigidType = 'dynamic',
     widthSegments = 1,
     heightSegments = 1,
     depthSegments = 1
@@ -27,7 +28,13 @@ const cube = (
   mesh.castShadow = true;
   mesh.receiveShadow = true;
 
-  const rigidBodyDesc = RigidBodyDesc.dynamic();
+  let rigidBodyDesc = null;
+  if (rigidType === 'dynamic') {
+    rigidBodyDesc = RigidBodyDesc.dynamic();
+  } else if (rigidType === 'fixed') {
+    rigidBodyDesc = RigidBodyDesc.fixed();
+  }
+
   rigidBodyDesc.setTranslation(translation.x, translation.y, translation.z);
   const q = new Quaternion().setFromEuler(
     new Euler( rotation.x, rotation.y, rotation.z, 'XYZ' )
