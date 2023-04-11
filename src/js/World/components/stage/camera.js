@@ -4,9 +4,9 @@ import { MathUtils } from 'three';
 const createCamera = () => {
   const camera = new PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 300 );
 
-  const radius  = 4;
-  const polar   = MathUtils.degToRad(60);
-  const equator = MathUtils.degToRad(10);
+  const radius  = 2.2;
+  const polar   = MathUtils.degToRad(75);
+  const equator = MathUtils.degToRad(0);
   const cameraVector = new Vector3();
   cameraVector.setFromSphericalCoords(radius, polar, equator);
   camera.position.x = cameraVector.x;

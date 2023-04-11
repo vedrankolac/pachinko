@@ -100,7 +100,7 @@ class RoomEnvironment extends Scene {
 
 	 // +y
 	 const ceelingLight = new Mesh( geometry, createAreaLightMaterial( 2 ) );
-	 ceelingLight.position.set( 0.0, 4.0, 0.0 );
+	 ceelingLight.position.set( 0.0, 4.0, 2.0 );
 	 ceelingLight.scale.set( 10, 0.01, 10 );
 	 this.add( ceelingLight );
 

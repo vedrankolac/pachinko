@@ -31,8 +31,8 @@ class World {
   constructor() {
     console.log('fxhash:   ', fxhash);
 
-    // this.planetsConfig = planetsConfig();
-    this.gravity = 9.81;
+    this.planetsConfig = planetsConfig();
+    this.gravity = this.planetsConfig.gravity;
     this.dt = 1/120;
 
     this.xrEnabled = false;
