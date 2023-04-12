@@ -37,10 +37,10 @@ const ssao = (
     luminanceInfluence: 0.6,
     minRadiusScale: 0.1,
     radius: 0.03,
-    intensity: 8,
-    bias: 0.0,
+    intensity: 5.8,
+    bias: 0.03,
     // fade: 0.085,
-    fade: 0.067,
+    fade: 0.11,
     color: null,
     resolutionScale: 1.0,
   });
@@ -61,40 +61,41 @@ const ssao = (
 
   composer.addPass(effectPass);
 
-  const blendMode = ssaoEffect.blendMode;
-  const uniforms = ssaoEffect.ssaoMaterial.uniforms;
+  // const blendMode = ssaoEffect.blendMode;
+  // const uniforms = ssaoEffect.ssaoMaterial.uniforms;
 
-  const params = {
-    "distance": {
-      "threshold": uniforms.distanceCutoff.value.x,
-      "falloff": (uniforms.distanceCutoff.value.y -
-        uniforms.distanceCutoff.value.x)
-    },
-    "proximity": {
-      "threshold": uniforms.proximityCutoff.value.x,
-      "falloff": (uniforms.proximityCutoff.value.y -
-        uniforms.proximityCutoff.value.x)
-    },
-    "upsampling": {
-      "enabled": ssaoEffect.defines.has("DEPTH_AWARE_UPSAMPLING"),
-      "threshold": Number(ssaoEffect.defines.get("THRESHOLD"))
-    },
-    "distanceScaling": {
-      "enabled": ssaoEffect.distanceScaling,
-      "min scale": uniforms.minRadiusScale.value
-    },
-    "lum influence": ssaoEffect.uniforms.get("luminanceInfluence").value,
-    "intensity": uniforms.intensity.value,
-    "bias": uniforms.bias.value,
-    "fade": uniforms.fade.value,
-    // "render mode": RenderMode.DEFAULT,
-    "resolution": ssaoEffect.resolution.scale,
-    "color": 0x000000,
-    "opacity": blendMode.opacity.value,
-    "blend mode": blendMode.blendFunction
-  };
+  // const params = {
+  //   "distance": {
+  //     "threshold": uniforms.distanceCutoff.value.x,
+  //     "falloff": (uniforms.distanceCutoff.value.y -
+  //       uniforms.distanceCutoff.value.x)
+  //   },
+  //   "proximity": {
+  //     "threshold": uniforms.proximityCutoff.value.x,
+  //     "falloff": (uniforms.proximityCutoff.value.y -
+  //       uniforms.proximityCutoff.value.x)
+  //   },
+  //   "upsampling": {
+  //     "enabled": ssaoEffect.defines.has("DEPTH_AWARE_UPSAMPLING"),
+  //     "threshold": Number(ssaoEffect.defines.get("THRESHOLD"))
+  //   },
+  //   "distanceScaling": {
+  //     "enabled": ssaoEffect.distanceScaling,
+  //     "min scale": uniforms.minRadiusScale.value
+  //   },
+  //   "lum influence": ssaoEffect.uniforms.get("luminanceInfluence").value,
+  //   "intensity": uniforms.intensity.value,
+  //   "bias": uniforms.bias.value,
+  //   "fade": uniforms.fade.value,
+  //   // "render mode": RenderMode.DEFAULT,
+  //   "resolution": ssaoEffect.resolution.scale,
+  //   "color": 0x000000,
+  //   "opacity": blendMode.opacity.value,
+  //   "blend mode": blendMode.blendFunction
+  // };
 
   // const gui = new GUI();
+  // gui.close();
   // gui.add(ssaoEffect, 'intensity', 0.0, 20.0 );
   // gui.add(ssaoEffect, "samples", 1, 32, 1);
 	// gui.add(ssaoEffect, "rings", 1, 16, 1);

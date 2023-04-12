@@ -20,6 +20,8 @@ const sphere = (
   const mesh = new Mesh( geometry, material );
   mesh.castShadow = true;
   mesh.receiveShadow = true;
+  mesh.collisionCounter = 0.1;
+  mesh.hue = props.hue;
 
   const rigidBodyDesc = RigidBodyDesc.dynamic();
   rigidBodyDesc.setTranslation(translation.x, translation.y, translation.z);
@@ -30,6 +32,7 @@ const sphere = (
 
   const rigidBody = physicsWorld.createRigidBody(rigidBodyDesc);
   rigidBody.iname = 'sphere';
+  rigidBody.mesh = mesh;
 
   let collider = null;
   if (!props.collisionEvents) {

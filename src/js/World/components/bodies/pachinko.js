@@ -5,6 +5,7 @@ import { hslToHex } from "../../utils/colorUtils";
 import { MathUtils } from 'three';
 import { mapNumber } from "../../utils/numUtils";
 import { board as pachinkoBoard } from "./board";
+import { canvasTextureMaterial } from "../materials/canvasTextureMaterial";
 
 
 const pachinko = (
@@ -13,18 +14,20 @@ const pachinko = (
   physicsWorld,
   envMap
 ) => {
-  const colorBall = hslToHex(Math.random(), 0.0, 0.08);
-  const ballMaterial = defaultColorMattPlastic(colorBall, 1, envMap);
-
   const borderDepth = 0.04;
   const board = pachinkoBoard(borderDepth, envMap, physicsWorld, scene, loop);
 
   // cylinders
 
-  const cylinderRadius = 0.006;
+  const cylinderRadius = 0.0034;
   // const cylinderRadius = Math.random() * 0.008 + 0.004;
-  const cylinderHeight = borderDepth;
+  const cylinderHeight = borderDepth + 0.06;
   const cylinderMargin = 0.048;
+  const cylinderHue = Math.random();
+
+  // const nc = Math.round(Math.random()*4) + 12;
+  const nc = 24;
+  console.log('grid:     ', nc);
 
   const marginRect = {
     right:  0.5 - borderDepth - cylinderRadius - cylinderMargin,
@@ -33,9 +36,6 @@ const pachinko = (
     bottom:       borderDepth + cylinderRadius + cylinderMargin,
   }
 
-  const nc = Math.round(Math.random()*4) + 12;
-  // const nc = 16;
-  console.log('grid:     ', nc);
   const ncy = nc;
   const ncx = nc;
   for (let i = 0; i < ncx; i++) {
@@ -67,7 +67,8 @@ const pachinko = (
         physicsWorld,
         {
           rigidBodyType: 'fixed',
-          collisionEvents: true
+          collisionEvents: true,
+          hue: cylinderHue,
         }
       );
       scene.add(cylinderItem.mesh);
@@ -76,13 +77,21 @@ const pachinko = (
   }
 
   // ball
+
+  
+  // const ballHue = Math.random();
+  const ballHue = cylinderHue + 0.1 + Math.random()*0.1;
+  // const ballHue = cylinderHue + 0.7;
   
   // const nOfBalls = Math.round(Math.random()*40) + 1;
-  const nOfBalls = 20;
+  const nOfBalls = 60;
   console.log('balls:    ', nOfBalls);
 
   for (let i = 0; i < nOfBalls; i++) {
-    const sphereRadius = Math.random()*0.008 + 0.008;
+    const colorBall = hslToHex(0, 0.0, 0.02);
+    const ballMaterial = canvasTextureMaterial({ envMap }, { color: colorBall, roughness: 0.2, metalness: 0.02});
+    const sphereRadius = Math.random()*0.006 + 0.006;
+    // const sphereRadius = 0.006;
     const sphereItem = sphere(
       ballMaterial,
       {
@@ -100,14 +109,15 @@ const pachinko = (
       },
       physicsWorld,
       {
-        collisionEvents: false
+        collisionEvents: false,
+        hue: ballHue
       }
     );
     scene.add(sphereItem.mesh);
     loop.bodies.push(sphereItem);
   }
 
-  return board.back.mesh;
+  return board.front.mesh;
 }
 
 export { pachinko };

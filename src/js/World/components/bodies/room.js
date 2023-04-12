@@ -15,7 +15,7 @@ const room = (physicsWorld, floorSize, isVisible = false) => {
     },
     translation: {
       x: 0,
-      y: -1,
+      y: -100,
       z: 0
     },
     rotation: {

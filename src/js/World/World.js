@@ -31,8 +31,9 @@ class World {
   constructor() {
     console.log('fxhash:   ', fxhash);
 
-    this.planetsConfig = planetsConfig();
-    this.gravity = this.planetsConfig.gravity;
+    // this.planetsConfig = planetsConfig();
+    // this.gravity = this.planetsConfig.gravity;
+    this.gravity = Math.random() * 6 + 1.4;
     this.dt = 1/120;
 
     this.xrEnabled = false;
@@ -54,7 +55,7 @@ class World {
     this.camera   = createCamera();
     this.lights   = createLights(this.scene);
 
-    this.stats = stats(false);
+    this.stats = stats(true);
     this.orbitControls = orbitControls(this.camera, this.renderer.domElement);
     this.composer = this.postprocessingEnabled ? postprocessing(this.camera, this.scene, this.renderer, this.ppMA) : null;
     this.loop = new Loop(this.camera, this.scene, this.renderer, this.composer, this.stats, this.orbitControls, this.postprocessingEnabled, this.gravity, this.dt);

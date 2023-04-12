@@ -149,9 +149,18 @@ class Loop {
 
             for (let i = 0; i < rbs.length; i++) {
               const rb = rbs[i];
+              // console.log(rb);
               if (rb.iname === 'cylinder') {
-                // console.log('add color', rb.mesh);
-                const newColor = hslToHex(0.0, 1, 0.4);
+                rb.mesh.collisionCounter -= 0.1;
+                let l = rb.mesh.collisionCounter;
+                const newColor = hslToHex(rb.mesh.hue, 1, l);
+                rb.mesh.material.color.set(newColor);
+              }
+              if (rb.iname === 'sphere') {
+                // console.log('sphere', rb.mesh);
+                rb.mesh.collisionCounter += 0.012;
+                let l = rb.mesh.collisionCounter;
+                const newColor = hslToHex(rb.mesh.hue, 0.98, l);
                 rb.mesh.material.color.set(newColor);
               }
             }

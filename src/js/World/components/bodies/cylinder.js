@@ -6,6 +6,7 @@ import {
 } from '@dimforge/rapier3d-compat';
 import { hslToHex } from '../../utils/colorUtils';
 import { defaultColorMattPlastic } from '../materials/defaultColorMattPlastic';
+import { canvasTextureMaterial } from '../materials/canvasTextureMaterial';
 
 const cylinder = (
   envMap,
@@ -15,14 +16,16 @@ const cylinder = (
     physicsWorld,
     props = {
       rigidBodyType: 'dynamic',
-      collisionEvents: false
+      collisionEvents: false,
+      hue: 0.0
     },
     radialSegments = 64,
     heightSegments = 1,
   ) => {
 
-  const color = hslToHex(0.4, 0, 0.4);
-  const material = defaultColorMattPlastic(color, 1, envMap);
+  const color = hslToHex(props.hue, 0, 0.9);
+  const material = canvasTextureMaterial({ envMap }, { color: color, roughness: 0.4, metalness: 0});
+  // const material = defaultColorMattPlastic(color, 1, envMap);
 
   const geometry = new CylinderGeometry(
     size.radius,
@@ -34,6 +37,8 @@ const cylinder = (
   const mesh = new Mesh( geometry, material );
   mesh.castShadow = true;
   mesh.receiveShadow = true;
+  mesh.collisionCounter = 0.8;
+  mesh.hue = props.hue;
 
   let rigidBodyDesc = null;
   if (props.rigidBodyType === 'dynamic') {

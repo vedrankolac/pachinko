@@ -13,7 +13,7 @@ const createLights = scene => {
   // setting lower mapSize makes it much faster on iPhone 12 Pro Max
   // const spot = new SpotLight(0xffffff, 840);
 
-  const spot = new SpotLight(0xffffff, 2.6);
+  const spot = new SpotLight(0xffffff, 5.0);
   spot.penumbra = 1;
   spot.decay = 0.8;
   spot.angle = Math.PI/5;
@@ -42,7 +42,7 @@ const createLights = scene => {
   // gui.add(spot, 'penumbra', 0.0, 2 );
   // gui.add(spot, 'decay', 0.0, 4 );
   // gui.add(spot, 'angle', 0.0, 2 );
-  // gui.add(ambient, 'intensity', 0.0, 10.0 );
+  // gui.add(ambient, 'intensity', 0.0, 20.0 );
 }
 
 export { createLights };
