@@ -1,7 +1,8 @@
 import { SphereGeometry, Mesh, Quaternion, Euler } from 'three';
 import {
   RigidBodyDesc,
-  ColliderDesc
+  ColliderDesc,
+  ActiveEvents
 } from '@dimforge/rapier3d-compat';
 
 const sphere = (
@@ -9,7 +10,10 @@ const sphere = (
     size,
     translation,
     rotation,
-    physicsWorld
+    physicsWorld,
+    props = {
+      collisionEvents: false
+    },
   ) => {
 
   const geometry = new SphereGeometry(size.radius, 64, 64);
@@ -25,22 +29,19 @@ const sphere = (
   rigidBodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
 
   const rigidBody = physicsWorld.createRigidBody(rigidBodyDesc);
-  const collider = ColliderDesc.ball(size.radius)
+  rigidBody.iname = 'sphere';
+
+  let collider = null;
+  if (!props.collisionEvents) {
+    collider = ColliderDesc.ball(size.radius)
     .setRestitution(0.9);
+  } else {
+    collider = ColliderDesc.ball(size.radius)
+    .setRestitution(0.9)
+    .setActiveEvents(ActiveEvents.COLLISION_EVENTS);
+  }
 
   physicsWorld.createCollider(collider, rigidBody);
-
-  // rigidBody.tick = (delta) => {
-  //   const treshold = Math.random();
-  //   const impulseRange = 0.01;
-  //   if (treshold < 0.02 && ((mesh.position.y - size.radius) < 0.01)) {
-  //     rigidBody.applyImpulse({
-  //       x: Math.random() * impulseRange - impulseRange/2,
-  //       y: Math.random() * impulseRange/2,
-  //       z: Math.random() * impulseRange - impulseRange/2
-  //     }, true);
-  //   }
-  // };
 
   return {
     mesh: mesh,

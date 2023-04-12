@@ -1,5 +1,6 @@
 import { Clock, Quaternion, Vector2 } from 'three';
-import { mapNumber } from '../utils/numUtils';
+import { EventQueue } from '@dimforge/rapier3d-compat';
+import { hslToHex } from '../utils/colorUtils';
 
 class Loop {
   constructor(camera, scene, renderer, composer = null, stats, orbitControls, doPostprocessing, gravity, dt) {
@@ -106,20 +107,6 @@ class Loop {
     for (const object of this.updatableBodies) {
       object.tick(this.dt);
     }
-    
-    // boundary crossing impulse that kicks body back to the direction of center
-    this.bodies.forEach(body => {
-      if (body.mesh.name === 'handle') {
-        const position = body.rigidBody.translation();
-        const b = new Vector2(position.x, position.z);
-
-        if (b.length() > 18) {
-          const xI = -position.x/b.length() * 0.1;
-          const zI = -position.z/b.length() * 0.1;
-          body.rigidBody.applyImpulse({x: xI, y: 0, z: zI}, true);
-        }
-      }
-    });
 
     if (!this.engineInitStepDone) {
       const preloader = document.getElementById("preloader");
@@ -128,15 +115,15 @@ class Loop {
       this.engineInitStepDone = true;
     }
 
-    if (this.stepCounter <= 400) {
-      if (this.stepCounter === 400) {
-        // this.prepareForCapture();
-        // this.saveAsPng();
-        // location.reload();
-        $fx.preview();
-      }
-      ++ this.stepCounter;
-    }
+    // if (this.stepCounter <= 400) {
+    //   if (this.stepCounter === 400) {
+    //     // this.prepareForCapture();
+    //     // this.saveAsPng();
+    //     // location.reload();
+    //     $fx.preview();
+    //   }
+    //   ++ this.stepCounter;
+    // }
   }
 
   tick() {
@@ -151,7 +138,26 @@ class Loop {
       while (this.accumulator >= this.dt) {
         // before making step in engine, run all the code that deals with updates to ensure we have a deterministic simulation
         this.updatePhysicsObjects();
-        this.physicsWorld.step();
+        
+        let eventQueue = new EventQueue(true);
+        this.physicsWorld.step(eventQueue);
+        eventQueue.drainCollisionEvents((handle1, handle2, started) => {
+          if (started) {
+            const rbs = [];
+            rbs.push(this.physicsWorld.getRigidBody(handle1));
+            rbs.push(this.physicsWorld.getRigidBody(handle2));
+
+            for (let i = 0; i < rbs.length; i++) {
+              const rb = rbs[i];
+              if (rb.iname === 'cylinder') {
+                // console.log('add color', rb.mesh);
+                const newColor = hslToHex(0.0, 1, 0.4);
+                rb.mesh.material.color.set(newColor);
+              }
+            }
+          }
+        });
+
         this.accumulator -= this.dt;
       }
 

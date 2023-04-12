@@ -1,19 +1,28 @@
 import { CylinderGeometry, Mesh, Quaternion, Euler } from 'three';
 import {
   RigidBodyDesc,
-  ColliderDesc
+  ColliderDesc,
+  ActiveEvents
 } from '@dimforge/rapier3d-compat';
+import { hslToHex } from '../../utils/colorUtils';
+import { defaultColorMattPlastic } from '../materials/defaultColorMattPlastic';
 
 const cylinder = (
-    material,
+  envMap,
     size,
     translation,
     rotation,
     physicsWorld,
-    rigidType = 'dynamic',
+    props = {
+      rigidBodyType: 'dynamic',
+      collisionEvents: false
+    },
     radialSegments = 64,
     heightSegments = 1,
   ) => {
+
+  const color = hslToHex(0.4, 0, 0.4);
+  const material = defaultColorMattPlastic(color, 1, envMap);
 
   const geometry = new CylinderGeometry(
     size.radius,
@@ -27,9 +36,9 @@ const cylinder = (
   mesh.receiveShadow = true;
 
   let rigidBodyDesc = null;
-  if (rigidType === 'dynamic') {
+  if (props.rigidBodyType === 'dynamic') {
     rigidBodyDesc = RigidBodyDesc.dynamic();
-  } else if (rigidType === 'fixed') {
+  } else if (props.rigidBodyType === 'fixed') {
     rigidBodyDesc = RigidBodyDesc.fixed();
   }
 
@@ -40,8 +49,16 @@ const cylinder = (
   rigidBodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
 
   const rigidBody = physicsWorld.createRigidBody(rigidBodyDesc);
-  const collider = ColliderDesc.cylinder(size.height / 2, size.radius);
+  rigidBody.iname = 'cylinder';
+  rigidBody.mesh = mesh;
 
+  let collider = null;
+  if (!props.collisionEvents) {
+    collider = ColliderDesc.cylinder(size.height / 2, size.radius);
+  } else {
+    collider = ColliderDesc.cylinder(size.height / 2, size.radius).setActiveEvents(ActiveEvents.COLLISION_EVENTS);
+  }
+  
   physicsWorld.createCollider(collider, rigidBody);
 
   return {
