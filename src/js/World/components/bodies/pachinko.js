@@ -14,8 +14,10 @@ const pachinko = (
   physicsWorld,
   envMap
 ) => {
+  const cylinderHue = Math.random();
+
   const borderDepth = 0.04;
-  const board = pachinkoBoard(borderDepth, envMap, physicsWorld, scene, loop);
+  const board = pachinkoBoard(borderDepth, cylinderHue, envMap, physicsWorld, scene, loop);
 
   // cylinders
 
@@ -23,7 +25,7 @@ const pachinko = (
   // const cylinderRadius = Math.random() * 0.008 + 0.004;
   const cylinderHeight = borderDepth + 0.06;
   const cylinderMargin = 0.048;
-  const cylinderHue = Math.random();
+  
 
   // const nc = Math.round(Math.random()*4) + 12;
   const nc = 24;

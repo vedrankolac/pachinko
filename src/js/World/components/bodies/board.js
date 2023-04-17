@@ -2,9 +2,16 @@ import { cube } from "../bodies/cube";
 import { hslToHex } from "../../utils/colorUtils";
 import { defaultColorMattPlastic } from "../materials/defaultColorMattPlastic";
 
-export const board = (borderDepth, envMap, physicsWorld, scene, loop) => {
+export const board = (
+    borderDepth,
+    hue,
+    envMap,
+    physicsWorld,
+    scene,
+    loop
+  ) => {
 
-  const colorBack = hslToHex(0.6, 0, 0.99);
+  const colorBack = hslToHex(hue, 0.99, 0.84);
   const backMaterial = defaultColorMattPlastic(colorBack, 1, envMap);
 
   const colorBorder = hslToHex(0.4, 0, 0.6);
