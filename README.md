@@ -1,4 +1,10 @@
 ## pachinko
+
+Pachinko simulation made with Rapier and three.js
+
+Preview it [here](https://vedrankolac.github.io/pachinko/)
+
+### Boilerplate
 Boilerplate for a fast start with three.js materials in rapier physics engine on Oculus Quest 2 VR headset.
 - only tested on Oculus Quest 2
 - movement is controlled with joystick
